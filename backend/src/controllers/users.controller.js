@@ -1,5 +1,8 @@
 import { pool } from "../db.js";
 import bcrypt from "bcrypt";
+import { invalidateOtherSessions } from "../utils/sessions.js";
+import { invalidateUserSessions } from "../utils/sessions.js";
+
 
 
 // =========================
@@ -77,14 +80,12 @@ export const updateMyProfile = async (req, res) => {
 };
 
 
-
 // =========================
-// CHANGE PASSWORD
+// USER CHANGE PASSWORD (with session invalidation)
 // =========================
-
-export const changePassword = async (req,res) => {
-
-  const { currentPassword,newPassword } = req.body;
+export const changePassword = async (req, res) => {
+  const { currentPassword, newPassword, refreshToken } = req.body;
+  // ✅ El frontend debe enviar el refreshToken actual
 
   const result = await pool.query(
     "SELECT password FROM users WHERE id=$1",
@@ -92,13 +93,12 @@ export const changePassword = async (req,res) => {
   );
 
   const user = result.rows[0];
+  const valid = await bcrypt.compare(currentPassword, user.password);
 
-  const valid = await bcrypt.compare(currentPassword,user.password);
+  if (!valid)
+    return res.status(400).json({ message: "Incorrect password" });
 
-  if(!valid)
-    return res.status(400).json({message:"Incorrect password"});
-
-  const hashed = await bcrypt.hash(newPassword,10);
+  const hashed = await bcrypt.hash(newPassword, 10);
 
   await pool.query(`
     UPDATE users
@@ -106,15 +106,22 @@ export const changePassword = async (req,res) => {
         force_password_change=false,
         updated_at=NOW()
     WHERE id=$2
-  `,[hashed,req.user.id]);
+  `, [hashed, req.user.id]);
 
-  res.json({message:"Password updated"});
+  // ✅ Invalida todas las sesiones menos la actual
+  if (refreshToken) {
+    await invalidateOtherSessions(req.user.id, refreshToken);
+  }
+
+  res.json({ message: "Password updated" });
 };
 
 
 
+
+
 // =========================
-// ADMIN RESET PASSWORD
+// ADMIN RESET PASSWORD (with session invalidation)
 // =========================
 
 export const adminResetPassword = async (req,res) => {
@@ -132,10 +139,51 @@ export const adminResetPassword = async (req,res) => {
     WHERE id=$2
   `,[hashed,id]);
 
+  // ✅ Invalida TODAS las sesiones del usuario afectado
+  await invalidateUserSessions(id);
   res.json({message:"Password reset"});
 };
 
+// =========================
+// reset password (con token de recuperación)
+// =========================
 
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const result = await pool.query(
+      `SELECT * FROM users
+       WHERE reset_password_token=$1
+       AND reset_password_expires > NOW()`,
+      [token]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(400).json({ message: "Token inválido o expirado" });
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `UPDATE users
+       SET password=$1,
+           reset_password_token=NULL,
+           reset_password_expires=NULL
+       WHERE id=$2`,
+      [hashed, result.rows[0].id]
+    );
+
+    //  Invalida TODAS las sesiones — alguien pudo haber
+    // comprometido la cuenta, cerramos todo
+    await invalidateUserSessions(result.rows[0].id);
+
+    res.json({ message: "Contraseña actualizada" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // =========================
 // DEACTIVATE USER

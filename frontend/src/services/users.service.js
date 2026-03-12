@@ -11,7 +11,11 @@ export const updateMyProfile = async (data) => {
 };
 
 export const changePassword = async (data) => {
-  const res = await api.put("/users/change-password", data);
+  const refreshToken = localStorage.getItem("refreshToken");
+  const res = await api.put("/users/change-password", {
+    ...data,
+    refreshToken  // ✅ para que el backend pueda conservar la sesión actual
+  });
   return res.data;
 };
 
