@@ -10,6 +10,8 @@ import Sessions from "./pages/Sessions";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AcceptInvite from "./pages/AcceptInvite";
+import Invitations from "./pages/Invitations";
+
 
 
 // ✅ Componente que protege rutas — si no hay sesión, redirige al login
@@ -67,6 +69,12 @@ export default function App() {
       <Route path="/sessions" element={
         <PrivateRoute>
           <Sessions />
+        </PrivateRoute>
+      } />
+
+      <Route path="/invitations" element={
+        <PrivateRoute minLevel={70}>
+          <Invitations />
         </PrivateRoute>
       } />
 

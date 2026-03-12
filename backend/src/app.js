@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import logsRoutes from "./routes/logs.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import seccionRoutes from "./routes/sessions.routes.js";
+import invitationsRoutes from "./routes/invitations.routes.js";
 
 
 dotenv.config();
@@ -50,6 +51,7 @@ app.use("/workers", workersRoutes);
 app.use("/logs", logsRoutes);
 app.use("/users", usersRoutes);
 app.use("/sessions", seccionRoutes);
+app.use("/invitations", invitationsRoutes);
 
  // Middleware de manejo de errores (SIEMPRE AL FINAL DE LAS RUTAS)
 app.use(errorHandler);

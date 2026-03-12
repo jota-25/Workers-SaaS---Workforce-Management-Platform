@@ -8,6 +8,7 @@ const navItems = [
   { to: "/users",     label: "Usuarios",   icon: "👥", minLevel: 50 },
   { to: "/sessions",  label: "Sesiones",   icon: "🔐", minLevel: 0  },
   { to: "/logs",      label: "Logs",       icon: "📋", minLevel: 90 },
+  { to: "/invitations", label: "Invitaciones", icon: "✉️", minLevel: 70 },
 ];
 
 export const Sidebar = () => {
