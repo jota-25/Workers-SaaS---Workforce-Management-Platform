@@ -1,0 +1,45 @@
+name: CD — Deploy
+
+# ✅ Solo se ejecuta cuando hay un push a main
+# Y solo si el CI pasó primero
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    # ✅ Este job depende de que los tests pasen
+    # Si el CI falla, este job no corre
+    needs: []  # lo conectaremos con Jest en la Etapa 9
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ================================
+      # Deploy Backend → Render
+      # ================================
+      - name: Deploy Backend to Render
+        run: |
+          curl -X POST \
+            "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
+
+      # ================================
+      # Deploy Frontend → Vercel
+      # ================================
+      - name: Deploy Frontend to Vercel
+        run: |
+          curl -X POST \
+            "https://api.vercel.com/v1/integrations/deploy/${{ secrets.VERCEL_DEPLOY_HOOK }}" \
+
+      # ================================
+      # Notificación final
+      # ================================
+      - name: Notify success
+        run: echo "✅ Deploy completado — $(date)"
