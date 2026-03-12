@@ -15,6 +15,8 @@ dotenv.config();
 
 const app = express();
 
+// Si estás detrás de un proxy (como en producción), esto es necesario para que el rate limiter funcione correctamente con la IP del cliente real
+app.set("trust proxy", 1);
 // Configuración de CORS para permitir peticiones desde el frontend y va antes de cualquier cosa
 app.use(cors({
   origin: ["http://localhost:5173", // URL del frontend en desarrollo
