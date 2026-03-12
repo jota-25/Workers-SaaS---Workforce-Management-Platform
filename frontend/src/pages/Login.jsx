@@ -163,9 +163,7 @@ export default function Login() {
           {/* Link de olvidé contraseña */}
           <div className="text-center mt-4">
             
-              href="/forgot-password"
-              className="text-sm text-blue-600 hover:underline"
-           <a>
+          <a href="/forgot-password" className="text-sm text-blue-600 hover:underline">
               ¿Olvidaste tu contraseña?
             </a>
           </div>
