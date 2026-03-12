@@ -5,6 +5,8 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 
+console.log("DB CONFIG:", process.env.DATABASE_URL ? "usando DATABASE_URL" : "usando variables separadas");
+
 export const pool = new Pool(process.env.DATABASE_URL
   ? {
         
