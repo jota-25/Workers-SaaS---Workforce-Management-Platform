@@ -62,9 +62,6 @@ app.get("/test-db", async (req, res) => {
   res.json(result.rows);
 });
 
-// Arrancar servidor (SIEMPRE AL FINAL)
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor en http://localhost:${PORT}`);
-});
+// Exportamos el app para usarlo en index.js y también en los tests sin necesidad de levantar el servidor completo
+export default app;
 
