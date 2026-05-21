@@ -319,8 +319,8 @@ export const acceptInvite = async (req, res, next) => {
 
     const user = await pool.query(
       `INSERT INTO users
-      (email,password,nickname,role_id)
-      VALUES ($1,$2,$3,$4)
+      (email,password,nickname,role_id,is_verified)
+      VALUES ($1,$2,$3,$4,true)
       RETURNING id`,
       [data.email, hashed, nickname, data.role_id]
     );
