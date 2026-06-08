@@ -10,7 +10,7 @@ import { invitationRepository } from "../invitations/invitations.repository.js";
 
 import { workerRepository } from "../workers/workers.repository.js";
 import { sendEmail } from "../../shared/utils/mailer.js";
-import { AppError } from "../../middlewares/appError.middleware.js";
+import { AppError } from "../../middlewares/AppError.middleware.js";
 
 export const authService = {
 
