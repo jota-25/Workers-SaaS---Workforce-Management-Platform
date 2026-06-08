@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from "@jest/globals";
 import request from "supertest";
 import app from "../app.js";
-import { setupTestDB, cleanTestDB, closeTestDB, testPool } from "../db.test.js";
+import { setupTestDB, cleanTestDB, closeTestDB, testPool } from "../config/database.js.test.js";
 import bcrypt from "bcrypt";
 
 // ✅ Antes de todos los tests — crear tablas

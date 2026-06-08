@@ -1,25 +1,37 @@
-import { pool } from "../db.js";
+import { userRepository } from "../modules/users/users.repository.js";
 
 export const requireLevel = (minLevel) => {
   return async (req, res, next) => {
-    if (!req.user)
-      return res.status(401).json({ message: "Unauthorized" });
+    try {
 
-    const result = await pool.query(`
-      SELECT r.level
-      FROM users u
-      JOIN roles r ON r.id = u.role_id
-      WHERE u.id = $1
-    `, [req.user.id]);
+      if (!req.user) {
+        return res.status(401).json({
+          message: "Unauthorized",
+        });
+      }
 
-    if (result.rowCount === 0)
-      return res.status(403).json({ message: "No role assigned" });
+      const user =
+        await userRepository.findByIdWithRole(
+          req.user.id
+        );
 
-    const userLevel = result.rows[0].level;
+      if (!user?.role) {
+        return res.status(403).json({
+          message: "No role assigned",
+        });
+      }
 
-    if (userLevel < minLevel)
-      return res.status(403).json({ message: "Insufficient permissions" });
+      if (user.role.level < minLevel) {
+        return res.status(403).json({
+          message:
+            "Insufficient permissions",
+        });
+      }
 
-    next();
+      next();
+
+    } catch (error) {
+      next(error);
+    }
   };
 };

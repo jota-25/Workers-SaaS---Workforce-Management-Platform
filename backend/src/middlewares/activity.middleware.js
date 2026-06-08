@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { activityLogsRepository } from "../modules/activityLogs/activityLogs.repository.js";
 
 export const activityLogger = (action, resource = null) => {
   return async (req, res, next) => {
@@ -8,18 +8,13 @@ export const activityLogger = (action, resource = null) => {
 
         if (res.statusCode >= 400) return;
 
-        await pool.query(
-          `INSERT INTO activity_logs 
-          (user_id, action, resource, resource_id, ip)
-          VALUES ($1,$2,$3,$4,$5)`,
-          [
-            req.user?.id || null,
-            action,
-            resource,
-            req.params?.id || null,
-            req.ip
-          ]
-        );
+        await activityLogsRepository.create({
+          userId: req.user?.id || null,
+          action,
+          resource,
+          resourceId: req.params?.id || null,
+          ip: req.ip,
+        });
 
       } catch (err) {
         console.error("Activity log error", err);

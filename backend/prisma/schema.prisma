@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     Int       @id @default(autoincrement())
+  name                   String?   @db.VarChar(100)
+  email                  String    @unique @db.VarChar(150)
+  password               String
+  createdAt              DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  isVerified             Boolean?  @default(false) @map("is_verified")
+  emailVerificationToken String?   @map("email_verification_token")
+  resetPasswordToken     String?   @map("reset_password_token")
+  resetPasswordExpires   DateTime? @map("reset_password_expires") @db.Timestamp(6)
+  nickname               String?   @unique
+  roleId                 Int?      @map("role_id")
+  isActive               Boolean?  @default(true) @map("is_active")
+  updatedAt              DateTime? @default(now()) @map("updated_at") @db.Timestamp(6)
+  forcePasswordChange    Boolean?  @default(false) @map("force_password_change")
+  sessions               Session[]
+  role                   Role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workers                Worker[]
+
+  @@map("users")
+}
+
+model Worker {
+  id          Int          @id @default(autoincrement())
+  name        String?      @db.VarChar(100)
+  email       String?      @db.VarChar(100) @unique
+  position    String?      @db.VarChar(100)
+  createdAt   DateTime?    @default(now()) @map("created_at") @db.Timestamp(6)
+  isActive    Boolean?     @default(true) @map("is_active")
+  updatedAt   DateTime?    @default(now()) @map("updated_at") @db.Timestamp(6)
+  userId      Int?         @map("user_id")
+  invitations Invitation[]
+  user        User?        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("workers")
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  level       Int
+  invitations Invitation[]
+  users       User[]
+
+  @@map("roles")
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  userId       Int       @map("user_id")
+  refreshToken String    @map("refresh_token")
+  ip           String?
+  userAgent    String?   @map("user_agent")
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  expiresAt    DateTime  @map("expires_at") @db.Timestamp(6)
+  lastUsedAt   DateTime? @default(now()) @map("last_used_at") @db.Timestamp(6)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("sessions")
+}
+
+model Invitation {
+  id        Int       @id @default(autoincrement())
+  email     String
+  token     String    @unique
+  roleId    Int?      @map("role_id")
+  workerId  Int?      @map("worker_id")
+  expiresAt DateTime? @map("expires_at") @db.Timestamp(6)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  used      Boolean?  @default(false)
+  role      Role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  worker    Worker?   @relation(fields: [workerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("invitations")
+}
+
+model ActivityLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?      @map("user_id")
+  action     String
+  resource   String?
+  resourceId Int?      @map("resource_id")
+  ip         String?
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@map("activity_logs")
+}
+
+model AuditTrail {
+  id         Int       @id @default(autoincrement())
+  userId     Int?      @map("user_id")
+  action     String?
+  resource   String?
+  resourceId Int?      @map("resource_id")
+  beforeData Json?     @map("before_data")
+  afterData  Json?     @map("after_data")
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  ip         String?
+
+  @@map("audit_trail")
+}

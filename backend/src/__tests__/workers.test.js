@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from "@jest/globals";
 import request from "supertest";
 import app from "../app.js";
-import { setupTestDB, cleanTestDB, closeTestDB, testPool } from "../db.test.js";
+import { setupTestDB, cleanTestDB, closeTestDB, testPool } from "../config/database.js.test.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -67,12 +67,14 @@ describe("POST /workers", () => {
       .send({
         name: "Juan López",
         email: "juan@test.com",
-        position: "Supervisor"
+        position: "Supervisor" // antes era "Supervisor" lo cambie para ver que falla
       });
-
-    expect(res.status).toBe(200);
+     /* console.log("STATUS:", res.status);
+      console.log("BODY:", JSON.stringify(res.body, null, 2));*/ //los console son para ver que falla en la prueba solo se habilita si falla la prueba, si pasa se inavilita para no llenar la consola de logs
+    expect(res.status).toBe(201);
     expect(res.body.worker).toHaveProperty("id");
     expect(res.body.worker.name).toBe("Juan López");
+    
   });
 
   it("retorna error con datos incompletos", async () => {

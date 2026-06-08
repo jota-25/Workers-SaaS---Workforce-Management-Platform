@@ -1,15 +1,16 @@
 import express from "express";
 import cors from "cors"; // Para permitir peticiones desde el frontend
-import { pool } from "./db.js";
-import authRoutes from "./routes/auth.routes.js";
-import dashboardRoutes from "./routes/dashboard.routes.js";
-import workersRoutes from "./routes/workers.routes.js";
+// import { pool } from "./db.js";  para conectar una base como normalmente se hace con el pool de pg
+import {prisma} from "./lib/prisma.js"; // Prisma para consultas a la base de datos CON MIGRACIONES y un ORM más moderno
+import authRoutes from "./modules/auth/auth.routes.js";
+import dashboardRoutes from "./modules/auth/auth.routes.js";
+import workersRoutes from "./modules/workers/workers.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import dotenv from "dotenv";
-import logsRoutes from "./routes/logs.routes.js";
-import usersRoutes from "./routes/users.routes.js";
-import seccionRoutes from "./routes/sessions.routes.js";
-import invitationsRoutes from "./routes/invitations.routes.js";
+import logsRoutes from "./modules/logs/logs.routes.js";
+import usersRoutes from "./modules/users/users.routes.js";
+import seccionRoutes from "./modules/sessions/sessions.routes.js";
+import invitationsRoutes from "./modules/invitations/invitations.routes.js";
 
 
 dotenv.config();
@@ -29,7 +30,7 @@ app.use(cors({
   credentials: true                  // permite enviar cookies/headers de auth
 }));
 
-app.use(express.json());
+
 
 // Middlewares globales
 app.use(express.json());
@@ -57,9 +58,14 @@ app.use("/invitations", invitationsRoutes);
 app.use(errorHandler);
 
 // Test DB
-app.get("/test-db", async (req, res) => {
+/*app.get("/test-db", async (req, res) => {
   const result = await pool.query("SELECT NOW()");
   res.json(result.rows);
+});*/
+  // el de arriba es de forma tradicional con pool, el de abajo es con prisma
+app.get("/test-db", async (req, res) => {
+  const result = await prisma.$queryRaw`SELECT NOW() as current_time`;
+  res.json(result);
 });
 
 // Exportamos el app para usarlo en index.js y también en los tests sin necesidad de levantar el servidor completo

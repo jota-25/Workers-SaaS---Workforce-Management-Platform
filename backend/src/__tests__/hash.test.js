@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { hashToken } from "../utils/hash.js";
+import { hashToken } from "../shared/utils/hash.js";
 
 describe("hashToken", () => {
 
