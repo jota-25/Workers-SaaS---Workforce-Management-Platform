@@ -205,10 +205,15 @@ export const authService = {
       refreshToken,
       process.env.JWT_REFRESH_SECRET
     );
-
+     const user =
+      await userRepository.findByIdWithRole(
+        payload.id
+      );
     const accessToken = jwt.sign(
       {
         id: payload.id,
+        roleId: user.roleId,
+        level: user.role.level,
       },
       process.env.JWT_SECRET,
       {
@@ -219,6 +224,7 @@ export const authService = {
     const newRefreshToken = jwt.sign(
       {
         id: payload.id,
+        
       },
       process.env.JWT_REFRESH_SECRET,
       {

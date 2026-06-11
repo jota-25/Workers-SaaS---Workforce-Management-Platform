@@ -3,21 +3,28 @@ import request from "supertest";
 import app from "../app.js";
 import { setupTestDB, cleanTestDB, closeTestDB, testPool } from "../config/database.js.test.js";
 import bcrypt from "bcrypt";
-
-// ✅ Antes de todos los tests — crear tablas
+import {redis} from "../lib/redis.js"
+//  Antes de todos los tests — crear tablas
 beforeAll(async () => {
   await setupTestDB();
 });
 
-// ✅ Antes de cada test — limpiar datos
+//  Antes de cada test — limpiar datos
 beforeEach(async () => {
   await cleanTestDB();
 });
 
-// ✅ Después de todos los tests — cerrar conexión
+// Antes de cada test - limpiar cache(redis)
+beforeEach(async () => {
+  /*console.log("Limpiando Redis...");*/ // solo para ver si funciona el redis 
+  await redis.flushall();
+});
+
+//  Después de todos los tests — cerrar conexión
 afterAll(async () => {
   await closeTestDB();
 });
+
 
 // Helper — crea un usuario de prueba directamente en la DB
 const createTestUser = async ({
@@ -84,6 +91,7 @@ describe("POST /auth/login", () => {
 
     expect(res.status).toBe(403);
     expect(res.body.message).toBe("Verifica tu email primero");
+
   });
 
   it("retorna 403 si el usuario está desactivado", async () => {
@@ -94,6 +102,8 @@ describe("POST /auth/login", () => {
       .send({ login: "test@test.com", password: "123456" });
 
     expect(res.status).toBe(403);
+
+
   });
 
   it("retorna 400 si faltan campos", async () => {

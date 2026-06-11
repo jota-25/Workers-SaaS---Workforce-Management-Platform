@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
+import {redis} from "../../lib/redis.js"
 
 export const userRepository = {
 
@@ -32,18 +33,56 @@ export const userRepository = {
   },
 
   async findByIdWithRole(id) {
-    return prisma.user.findUnique({
+
+    const cacheKey = `user:${id}:withRole`;
+
+    const cachedUser =
+      await redis.get(cacheKey);
+
+    if (cachedUser) {
+      console.log(`Redis HIT -> ${cacheKey}`);
+      return cachedUser;
+    }
+
+    console.log(`Redis MISS -> ${cacheKey}`);
+
+    const user = await prisma.user.findUnique({
       where: {
-        id,
+        id: Number(id),
       },
       include: {
         role: true,
       },
     });
+
+    if (user) {
+      await redis.set(
+        cacheKey,
+        user,
+        {
+          ex: 300,
+        }
+      );
+    }
+
+    return user;
   },
 
   async findByLogin(login) {
-    return prisma.user.findFirst({
+
+    const cacheKey = `login:${login}`;
+
+    const cachedUser =
+      await redis.get(cacheKey);
+
+    if (cachedUser) {
+      console.log(`Redis HIT -> ${cacheKey}`);
+      return cachedUser;
+    }
+
+    console.log(`Redis MISS -> ${cacheKey}`);
+
+    const user = await prisma.user.findFirst({
       where: {
         OR: [
           { email: login },
@@ -54,6 +93,18 @@ export const userRepository = {
         role: true,
       },
     });
+
+    if (user) {
+      await redis.set(
+        cacheKey,
+        user,
+        {
+          ex: 300,
+        }
+      );
+    }
+
+    return user;
   },
   
   async existsAnyUser() {
@@ -69,10 +120,29 @@ export const userRepository = {
   },
 
   async update(id, data) {
-    return prisma.user.update({
-      where: { id },
-      data,
-    });
+
+    const oldUser =
+      await prisma.user.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+    const user =
+      await prisma.user.update({
+        where: {
+          id: Number(id),
+        },
+        data,
+      });
+
+    await Promise.all([
+      redis.del(`user:${id}:withRole`),
+      redis.del(`login:${oldUser.email}`),
+      redis.del(`login:${oldUser.nickname}`)
+    ]);
+
+    return user;
   },
 
   async countUsers() {
@@ -141,27 +211,9 @@ export const userRepository = {
   },
   
 
-  async findAll() {
-    return prisma.user.findMany({
-      include: {
-        role: true,
-      },
-      orderBy: {
-        id: "asc",
-      },
-    });
-  },
+  
 
-  async findByIdWithRole(id) {
-    return prisma.user.findUnique({
-      where: {
-        id: Number(id),
-      },
-      include: {
-        role: true,
-      },
-    });
-  },
+  
 
 
 };
