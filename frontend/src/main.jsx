@@ -8,7 +8,7 @@ import "./index.css";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      {/* ✅ AuthProvider envuelve toda la app
+      {/*  AuthProvider envuelve toda la app
           para que cualquier componente pueda acceder al usuario */}
       <AuthProvider>
         <App />

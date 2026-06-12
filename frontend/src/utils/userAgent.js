@@ -1,4 +1,4 @@
-// ✅ Detecta el navegador desde el user agent string
+//  Detecta el navegador desde el user agent string
 export const parseBrowser = (ua = "") => {
   if (!ua || ua === "unknown") return "Navegador desconocido";
   if (ua.includes("Edg"))     return "Edge";
@@ -9,7 +9,7 @@ export const parseBrowser = (ua = "") => {
   return "Navegador desconocido";
 };
 
-// ✅ Detecta el sistema operativo
+//  Detecta el sistema operativo
 export const parseOS = (ua = "") => {
   if (!ua || ua === "unknown") return "SO desconocido";
   if (ua.includes("Windows"))  return "Windows";
@@ -20,14 +20,14 @@ export const parseOS = (ua = "") => {
   return "SO desconocido";
 };
 
-// ✅ Devuelve un ícono según el dispositivo
+//  Devuelve un ícono según el dispositivo
 export const getDeviceIcon = (ua = "") => {
   if (ua.includes("iPhone") || ua.includes("Android")) return "📱";
   if (ua.includes("iPad"))                              return "📱";
   return "💻";
 };
 
-// ✅ Formatea tiempo relativo: "hace 2 horas", "hace 3 días"
+//  Formatea tiempo relativo: "hace 2 horas", "hace 3 días"
 export const timeAgo = (dateStr) => {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins  = Math.floor(diff / 60000);

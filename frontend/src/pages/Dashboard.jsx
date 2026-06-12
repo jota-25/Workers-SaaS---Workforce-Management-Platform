@@ -45,7 +45,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* ✅ Tarjetas de estadísticas */}
+      {/*  Tarjetas de estadísticas */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <StatCard
           title="Usuarios activos"
@@ -70,7 +70,7 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* ✅ Gráfico + Últimos logins */}
+      {/*  Gráfico + Últimos logins */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Gráfico de actividad por día */}
@@ -88,7 +88,7 @@ export default function Dashboard() {
                 <XAxis
                   dataKey="date"
                   tick={{ fontSize: 11 }}
-                  // ✅ Formateamos la fecha para que sea legible
+                  //  Formateamos la fecha para que sea legible
                   tickFormatter={(d) =>
                     new Date(d).toLocaleDateString("es", {
                       month: "short",

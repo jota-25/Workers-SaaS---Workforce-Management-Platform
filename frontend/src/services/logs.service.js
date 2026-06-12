@@ -10,7 +10,7 @@ export const getLogsStats = async () => {
   return res.data; // { actions, users, byDay }
 };
 
-// ✅ Para el export abrimos una URL directa en el navegador
+//  Para el export abrimos una URL directa en el navegador
 // así el navegador descarga el archivo automáticamente
 export const exportLogs = (type, format, from, to) => {
   const params = new URLSearchParams({ type, format });
@@ -20,7 +20,7 @@ export const exportLogs = (type, format, from, to) => {
   const token = localStorage.getItem("accessToken");
   const url = `${import.meta.env.VITE_API_URL}/logs/export?${params}`;
 
-  // ✅ Creamos un link temporal con el token en el header
+  //  Creamos un link temporal con el token en el header
   // no podemos usar axios aquí porque necesitamos descarga directa
   fetch(url, { headers: { Authorization: `Bearer ${token}` } })
     .then(res => res.blob())

@@ -23,7 +23,7 @@ export default function ForgotPassword() {
 
     try {
       await forgotPasswordRequest(email);
-      // ✅ Siempre mostramos éxito aunque el email no exista
+      //  Siempre mostramos éxito aunque el email no exista
       // Esto es por seguridad — no revelar si el email está registrado
       setSent(true);
     } catch {
@@ -45,7 +45,7 @@ export default function ForgotPassword() {
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
 
-          {/* ✅ Si ya se envió mostramos mensaje de confirmación */}
+          {/*  Si ya se envió mostramos mensaje de confirmación */}
           {sent ? (
             <div className="text-center">
               <div className="text-4xl mb-4">📧</div>
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
               <p className="text-sm text-gray-500 mb-6">
                 Si ese email está registrado, recibirás un enlace para restablecer tu contraseña en los próximos minutos.
               </p>
-              {/* ✅ Mientras no hay email real, el link aparece en los logs del backend */}
+              {/*  Mientras no hay email real, el link aparece en los logs del backend */}
               <p className="text-xs text-yellow-600 bg-yellow-50 rounded-lg px-3 py-2 mb-6">
                 ⚠️ Por ahora el link aparece en los logs del backend (consola de Render)
               </p>

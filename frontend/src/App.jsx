@@ -14,7 +14,7 @@ import Invitations from "./pages/Invitations";
 
 
 
-// ✅ Componente que protege rutas — si no hay sesión, redirige al login
+//  Componente que protege rutas — si no hay sesión, redirige al login
 const PrivateRoute = ({ children, minLevel = 0 }) => {
   const { user, loading } = useAuth();
 
@@ -26,7 +26,7 @@ const PrivateRoute = ({ children, minLevel = 0 }) => {
 
   if (!user) return <Navigate to="/login" />;
 
-  // ✅ Si la ruta requiere un nivel mínimo de permisos
+  //  Si la ruta requiere un nivel mínimo de permisos
   if (user.level < minLevel) return <Navigate to="/dashboard" />;
 
   return children;

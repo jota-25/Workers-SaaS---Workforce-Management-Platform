@@ -57,7 +57,7 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test_secret_for_ci
           JWT_REFRESH_SECRET: test_refresh_secret_for_ci
-          # ✅ Usamos una DB en memoria para los tests
+          #  Usamos una DB en memoria para los tests
           # No necesitamos Supabase real para testear
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/workers_test
 
@@ -81,7 +81,7 @@ jobs:
         working-directory: frontend
         run: npm install
 
-      # ✅ Verificamos que el frontend compila sin errores
+      #  Verificamos que el frontend compila sin errores
       - name: Build frontend
         working-directory: frontend
         run: npm run build

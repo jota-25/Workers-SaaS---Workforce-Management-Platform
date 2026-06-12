@@ -8,7 +8,7 @@ import api from "../lib/axios";
 export default function AcceptInvite() {
   const navigate = useNavigate();
 
-  // ✅ useParams lee el token de la URL
+  //  useParams lee el token de la URL
   // /invite/xxxxx → token = "xxxxx"
   const { token } = useParams();
 

@@ -33,14 +33,14 @@ import { Resend } from "resend";
 
 let resend = null;
 
-// ✅ Solo inicializar fuera de tests
+//  Solo inicializar fuera de tests
 if (process.env.NODE_ENV !== "test") {
   resend = new Resend(process.env.RESEND_API_KEY);
 }
 
 export const sendEmail = async ({ to, subject, html }) => {
 
-  // ✅ No enviar emails en tests
+  //  No enviar emails en tests
   if (process.env.NODE_ENV === "test") {
     return;
   }

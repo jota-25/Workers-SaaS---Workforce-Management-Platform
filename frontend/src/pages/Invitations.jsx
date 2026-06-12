@@ -7,7 +7,7 @@ import {
   cancelInvitation
 } from "../services/invitations.service";
 
-// ✅ Muestra si la invitación está expirada, pendiente o usada
+//  Muestra si la invitación está expirada, pendiente o usada
 const getStatus = (invite) => {
   if (invite.used) return { label: "Usada", color: "bg-green-100 text-green-700" };
   if (new Date(invite.expires_at) < new Date())
@@ -134,7 +134,7 @@ export default function Invitations() {
       {/* Mensajes */}
       {successMsg && (
         <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4">
-          <p className="text-sm text-green-700">✅ {successMsg}</p>
+          <p className="text-sm text-green-700"> {successMsg}</p>
         </div>
       )}
       {error && (

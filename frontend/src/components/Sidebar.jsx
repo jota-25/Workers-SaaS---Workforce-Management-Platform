@@ -34,7 +34,7 @@ export const Sidebar = ({ onClose }) => {
       <div className="flex items-center justify-between px-6 py-5 border-b border-gray-700">
         <span className="font-bold text-lg">Workers SaaS</span>
 
-        {/* ✅ Botón cerrar — solo visible en mobile */}
+        {/*  Botón cerrar — solo visible en mobile */}
         <button
           onClick={onClose}
           className="lg:hidden p-1 rounded hover:bg-gray-700 transition-colors"

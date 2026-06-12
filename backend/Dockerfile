@@ -1,11 +1,11 @@
-# ✅ Usamos Node.js 20 en su versión Alpine
+#  Usamos Node.js 20 en su versión Alpine
 # Alpine es una distribución Linux muy liviana (~5MB vs ~900MB de Ubuntu)
 FROM node:20-alpine
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# ✅ Copiamos primero solo los archivos de dependencias
+#  Copiamos primero solo los archivos de dependencias
 # Esto aprovecha el cache de Docker — si no cambiaron las dependencias,
 # no las reinstala en cada build
 COPY package*.json ./
@@ -13,13 +13,20 @@ COPY package*.json ./
 # Instalamos dependencias
 RUN npm install
 
-# ✅ Ahora copiamos el resto del código
+# copiar la carpeta prisma antes de generar el cliente
+COPY prisma ./prisma/
+
+# Generar el cliente  de Prisma dentro del contenerdor
+
+RUN npx prisma generate
+
+
+#  Ahora copiamos el resto del código
 # Si solo cambia el código pero no las dependencias,
 # Docker usa el cache del paso anterior
-COPY . .
-
+COPY . . 
 # Puerto que expone el contenedor
 EXPOSE 3000
 
 # Comando para arrancar el servidor
-CMD ["node", "src/server.js"]
+CMD ["node", "src/server.js", "run", "dev"]

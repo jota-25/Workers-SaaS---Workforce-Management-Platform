@@ -53,7 +53,7 @@ export default function Users() {
       const data = await getUsers();
       setUsers(data);
 
-      // ✅ Pre-llenamos el form de perfil con los datos actuales
+      //  Pre-llenamos el form de perfil con los datos actuales
       const myData = data.find(u => u.id === me?.id);
       if (myData) {
         setProfileForm({
@@ -320,7 +320,7 @@ export default function Users() {
                 >
                   <td className="px-6 py-4 text-gray-900 font-medium">
                     {user.email}
-                    {/* ✅ Indicador visual de "tú mismo" */}
+                    {/* Indicador visual de "tú mismo" */}
                     {user.id === me?.id && (
                       <span className="ml-2 text-xs text-blue-500">(tú)</span>
                     )}

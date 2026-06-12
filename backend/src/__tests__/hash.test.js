@@ -7,17 +7,17 @@ describe("hashToken", () => {
     const token = "mi_token_de_prueba";
     const hash = hashToken(token);
 
-    // ✅ Debe devolver un string
+    //  Debe devolver un string
     expect(typeof hash).toBe("string");
 
-    // ✅ El hash no debe ser igual al token original
+    //  El hash no debe ser igual al token original
     expect(hash).not.toBe(token);
   });
 
   it("genera el mismo hash para el mismo input", () => {
     const token = "token_consistente";
 
-    // ✅ SHA-256 es determinístico — mismo input = mismo output
+    // SHA-256 es determinístico — mismo input = mismo output
     expect(hashToken(token)).toBe(hashToken(token));
   });
 

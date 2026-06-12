@@ -9,13 +9,13 @@ import {
   PieChart, Pie, Cell, Legend
 } from "recharts";
 
-// ✅ Colores para el PieChart de acciones
+//  Colores para el PieChart de acciones
 const PIE_COLORS = [
   "#3b82f6", "#10b981", "#f59e0b",
   "#ef4444", "#8b5cf6", "#06b6d4"
 ];
 
-// ✅ Etiquetas legibles para cada acción
+//  Etiquetas legibles para cada acción
 const ACTION_LABELS = {
   LOGIN:          "Login",
   PASSWORD_RESET: "Reset password",
@@ -95,7 +95,7 @@ export default function Logs() {
   // Aplicar filtros
   // ================================
   const handleApplyFilters = () => {
-    // ✅ Solo enviamos los filtros que tienen valor
+    //  Solo enviamos los filtros que tienen valor
     const active = {};
     if (filters.action) active.action = filters.action;
     if (filters.from)   active.from   = filters.from;
@@ -443,7 +443,7 @@ export default function Logs() {
                       {stats.users.slice(0, 8).map((u, i) => (
                         <div key={i} className="py-2.5 flex justify-between items-center">
                           <div className="flex items-center gap-2">
-                            {/* ✅ Ranking visual */}
+                            {/*  Ranking visual */}
                             <span className={`
                               text-xs font-bold w-5 text-center
                               ${i === 0 ? "text-yellow-500" :

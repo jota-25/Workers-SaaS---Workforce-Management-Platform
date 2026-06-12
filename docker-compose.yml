@@ -9,14 +9,17 @@ services:
     image: postgres:16-alpine
     container_name: workers_db
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      POSTGRES_URL: ${DATABASE_URL}
     volumes:
-      # ✅ Los datos persisten aunque el contenedor se reinicie
-      - postgres_data:/var/lib/postgresql/data
-    ports:   // expone el puerto para que el backend pueda conectarse desde fuera del contenedor pero en produccion no es necesario
+      #  Los datos persisten aunque el contenedor se reinicie
+      - postgres_data_v2:/var/lib/postgresql/data
+    ports:   # expone el puerto para que el backend pueda conectarse desde fuera del contenedor pero en produccion no es necesario
       - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
@@ -31,7 +34,7 @@ services:
     build: ./backend
     container_name: workers_backend
     restart: unless-stopped
-    # ✅ El backend espera a que postgres esté listo antes de arrancar
+    # El backend espera a que postgres esté listo antes de arrancar
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,8 +44,10 @@ services:
       DB_NAME: ${DB_NAME}
       DB_HOST: postgres       # ← nombre del servicio, no localhost
       DB_PORT: 5432 
+      DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      RESEND_API_KEY: ${RESEND_API_KEY}
     ports:
       - "3000:3000"
 
@@ -58,7 +63,7 @@ services:
     ports:
       - "80:80"
 
-# ✅ Volumen nombrado — los datos de postgres sobreviven
+#  Volumen nombrado — los datos de postgres sobreviven
 # aunque borres y recrees los contenedores
 volumes:
-  postgres_data:
+  postgres_data_v2:

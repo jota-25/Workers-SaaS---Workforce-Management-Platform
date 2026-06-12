@@ -7,7 +7,7 @@ import { resetPasswordRequest } from "../services/auth.service";
 export default function ResetPassword() {
   const navigate = useNavigate();
 
-  // ✅ useSearchParams lee los parámetros de la URL
+  //  useSearchParams lee los parámetros de la URL
   // /reset-password?token=xxxxx → token = "xxxxx"
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -18,7 +18,7 @@ export default function ResetPassword() {
   const [serverError, setServerError] = useState("");
   const [success, setSuccess]     = useState(false);
 
-  // ✅ Si no hay token en la URL, mostramos error inmediatamente
+  // Si no hay token en la URL, mostramos error inmediatamente
   useEffect(() => {
     if (!token) {
       setServerError("El enlace es inválido o ha expirado. Solicita uno nuevo.");
@@ -57,7 +57,7 @@ export default function ResetPassword() {
     try {
       await resetPasswordRequest(token, form.newPassword);
       setSuccess(true);
-      // ✅ Redirigimos al login después de 3 segundos
+      //  Redirigimos al login después de 3 segundos
       setTimeout(() => navigate("/login"), 3000);
     } catch (error) {
       const status = error.response?.status;
@@ -82,7 +82,7 @@ export default function ResetPassword() {
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
 
-          {/* ✅ Pantalla de éxito */}
+          {/*  Pantalla de éxito */}
           {success ? (
             <div className="text-center">
               <div className="text-4xl mb-4">✅</div>

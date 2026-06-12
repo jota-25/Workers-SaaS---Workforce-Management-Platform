@@ -10,7 +10,7 @@ import {
   deleteWorker
 } from "../services/workers.service";
 
-// ✅ Formulario vacío reutilizable — para crear y resetear
+//  Formulario vacío reutilizable — para crear y resetear
 const EMPTY_FORM = { name: "", email: "", position: "" };
 
 export default function Workers() {
@@ -49,7 +49,7 @@ export default function Workers() {
     }
   };
 
-  // ✅ Se recarga cuando cambia la búsqueda o la página
+  //  Se recarga cuando cambia la búsqueda o la página
   useEffect(() => {
     fetchWorkers();
   }, [search, page]);
@@ -113,7 +113,7 @@ export default function Workers() {
     try {
       await createWorker(form);
       closeModal();
-      fetchWorkers(); // ✅ recargamos la lista
+      fetchWorkers(); //  recargamos la lista
     } catch (error) {
       const msg = error.response?.data?.message;
       setServerError(msg || "Error al crear el worker");
@@ -146,7 +146,7 @@ export default function Workers() {
   // Desactivar worker
   // ================================
   const handleDelete = async (worker) => {
-    // ✅ Confirmación antes de desactivar
+    //  Confirmación antes de desactivar
     const ok = window.confirm(
       `¿Desactivar a ${worker.name}? Podrá reactivarse después.`
     );
@@ -189,7 +189,7 @@ export default function Workers() {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setPage(1); // ✅ al buscar volvemos a la página 1
+            setPage(1); //  al buscar volvemos a la página 1
           }}
         />
       </div>
@@ -216,7 +216,7 @@ export default function Workers() {
           <tbody className="divide-y divide-gray-100">
 
             {loading ? (
-              // ✅ Skeleton rows mientras carga
+              //  Skeleton rows mientras carga
               [...Array(5)].map((_, i) => (
                 <tr key={i}>
                   {[...Array(5)].map((_, j) => (

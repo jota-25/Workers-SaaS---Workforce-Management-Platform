@@ -49,7 +49,7 @@ export default function Sessions() {
     setTimeout(() => setSuccessMsg(""), 3000);
   };
 
-  // ✅ Identificamos la sesión actual comparando el refreshToken
+  //  Identificamos la sesión actual comparando el refreshToken
   const currentRefreshToken = localStorage.getItem("refreshToken");
 
   // ================================
@@ -105,7 +105,7 @@ export default function Sessions() {
 
     try {
       await deleteAllSessions();
-      // ✅ Limpiamos tokens locales y redirigimos al login
+      //  Limpiamos tokens locales y redirigimos al login
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       window.location.href = "/login";
@@ -236,7 +236,7 @@ export default function Sessions() {
                     <p className="text-sm font-semibold text-gray-900">
                       {browser} — {os}
                     </p>
-                    {/* ✅ Badge sesión actual */}
+                    {/*  Badge sesión actual */}
                     {isCurrent && (
                       <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
                         Sesión actual

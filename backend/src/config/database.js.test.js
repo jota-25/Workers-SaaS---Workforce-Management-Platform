@@ -1,12 +1,12 @@
 import { config } from "dotenv";
 
-// ✅ Carga .env.test explícitamente
+//  Carga .env.test explícitamente
 config({ path: ".env.test", override: true });
 
 import pkg from "pg";
 const { Pool } = pkg;
 
-// ✅ Pool separado para tests
+// Pool separado para tests
 export const testPool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: false
