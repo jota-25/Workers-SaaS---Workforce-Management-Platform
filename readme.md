@@ -10,6 +10,10 @@ Aplicación desplegada:
 
 https://workers-saas.vercel.app/
 
+Usuario: demo@workerssaas.com
+Contraseña: Demo123*
+
+Estas credenciales tienen permisos limitados y están destinadas únicamente para la evaluación de la aplicación.
 ---
 
 ## Características principales
@@ -144,6 +148,13 @@ La separación de responsabilidades permite mantener el código escalable, mante
 * Resend
 
 ---
+## Notas para evaluación
+
+* El proyecto utiliza Resend para el envío de invitaciones por correo.
+* Debido a que actualmente se utiliza el plan gratuito de Resend con el dominio de pruebas (`resend.dev`), las invitaciones únicamente pueden enviarse a la dirección de correo verificada del desarrollador.
+* En un entorno de producción, esta limitación desaparece al configurar un dominio propio verificado.
+
+---
 
 ## Estructura del proyecto
 
@@ -231,22 +242,7 @@ La aplicación quedará disponible en:
 Frontend: http://localhost:5173
 Backend:  http://localhost:3000
 ```
-El proyecto incluye un entorno de desarrollo basado en Docker Compose.
 
-Servicios incluidos:
-
-| Servicio | Descripción |
-|-----------|-------------|
-| PostgreSQL | Base de datos principal |
-| Backend | API REST construida con Express |
-| Frontend | Aplicación React + Vite |
-
-Servicios externos:
-
-| Servicio | Descripción |
-|-----------|-------------|
-| Upstash Redis | Caché distribuida |
-| Resend | Envío de correos |
 ---
 
 ## Instalación manual
@@ -273,7 +269,22 @@ npm run dev
 
 ## Docker Compose
 
+El proyecto incluye un entorno de desarrollo basado en Docker Compose.
 
+Servicios incluidos:
+
+| Servicio | Descripción |
+|-----------|-------------|
+| PostgreSQL | Base de datos principal |
+| Backend | API REST construida con Express |
+| Frontend | Aplicación React + Vite |
+
+Servicios externos:
+
+| Servicio | Descripción |
+|-----------|-------------|
+| Upstash Redis | Caché distribuida |
+| Resend | Envío de correos |
 
 ## Variables de entorno
 

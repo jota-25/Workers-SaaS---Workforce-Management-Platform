@@ -12,7 +12,14 @@ export const errorHandler = (err, req, res, next) => {
       message: err.message,
     });
   }
-  
+
+  if (err.code === "P2002") {
+    const field = err.meta?.target?.[0];
+
+    return res.status(409).json({
+      message: `${field} ya está en uso`
+    });
+  }
   res.status(500).json({
     message: "Error interno del servidor"
   });

@@ -251,7 +251,7 @@ export default function Users() {
           <div className="flex-1 flex flex-col gap-1">
             <p className="text-sm text-gray-500">Rol</p>
             <p className="text-sm font-medium text-gray-900">
-              {users.find(u => u.id === me?.id)?.role || "–"}
+              {users.find(u => u.id === me?.id)?.role?.name || "–"}
             </p>
           </div>
         </div>
@@ -331,9 +331,9 @@ export default function Users() {
                   <td className="px-6 py-4">
                     <span className={`
                       inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      ${ROLE_COLORS[user.role] || "bg-gray-100 text-gray-600"}
+                      ${ROLE_COLORS[user.role?.name] || "bg-gray-100 text-gray-600"}
                     `}>
-                      {user.role || "–"}
+                      {user.role?.name || "–"}
                     </span>
                   </td>
                   <td className="px-6 py-4">
