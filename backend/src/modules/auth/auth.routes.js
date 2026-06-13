@@ -6,7 +6,7 @@ import { refreshToken } from "./auth.controller.js";
 import { verifyEmail } from "./auth.controller.js";
 import { forgotPassword , logout } from "./auth.controller.js";
 import { resetPassword } from "./auth.controller.js";
-import { activityLogger } from "../../middlewares/activity.middleware.js";
+import { activityLogger } from "../../middlewares/activity.middleware.js" 
 import { verifyToken } from "../../middlewares/auth.middleware.js";
 import { getInviteInfo } from "./auth.controller.js";
 import { acceptInvite } from "./auth.controller.js";
@@ -23,7 +23,7 @@ router.get("/invite/:token", getInviteInfo);
 
 router.post("/accept-invite", acceptInvite);
 
-router.post("/login", loginLimiter, activityLogger("LOGIN","auth"), login);
+router.post("/login", loginLimiter,  login);
 
 router.post("/refresh", refreshToken);
 

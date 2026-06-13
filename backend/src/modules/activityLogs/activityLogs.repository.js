@@ -25,7 +25,7 @@ export const activityLogsRepository = {
     return prisma.$queryRaw`
       SELECT
         DATE(created_at) as date,
-        COUNT(*) as total
+        COUNT(*)::int  as total
       FROM activity_logs
       GROUP BY DATE(created_at)
       ORDER BY date DESC

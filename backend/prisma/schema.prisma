@@ -26,6 +26,7 @@ model User {
   role                   Role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workers                Worker[]
 
+  activityLogs ActivityLog[]
   @@map("users")
 }
 
@@ -86,6 +87,7 @@ model Invitation {
 model ActivityLog {
   id         Int       @id @default(autoincrement())
   userId     Int?      @map("user_id")
+  user       User?     @relation(fields: [userId], references: [id])
   action     String
   resource   String?
   resourceId Int?      @map("resource_id")

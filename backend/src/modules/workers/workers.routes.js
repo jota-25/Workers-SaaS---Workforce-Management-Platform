@@ -13,7 +13,7 @@ import { activityLogger } from "../../middlewares/activity.middleware.js";
 const router = Router();
 
 router.get("/", verifyToken,requireLevel(50), getWorkers);
-// este es como el frontend del backen xd pero lo que jace es verificar el token y el rol para luego mandar al controller de workers 
+
 router.post(
   "/",
   verifyToken,

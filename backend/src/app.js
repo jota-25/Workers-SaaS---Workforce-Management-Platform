@@ -3,7 +3,7 @@ import cors from "cors"; // Para permitir peticiones desde el frontend
 // import { pool } from "./db.js";  para conectar una base como normalmente se hace con el pool de pg
 import {prisma} from "./lib/prisma.js"; // Prisma para consultas a la base de datos CON MIGRACIONES y un ORM más moderno
 import authRoutes from "./modules/auth/auth.routes.js";
-import dashboardRoutes from "./modules/auth/auth.routes.js";
+import dashboardRoutes from "./modules/dashboard/dashboard.routes.js";
 import workersRoutes from "./modules/workers/workers.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import dotenv from "dotenv";

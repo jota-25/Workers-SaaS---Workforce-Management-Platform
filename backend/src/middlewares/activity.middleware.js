@@ -8,6 +8,7 @@ export const activityLogger = (action, resource = null) => {
 
         if (res.statusCode >= 400) return;
 
+        console.log("req.user:", req.user);
         await activityLogsRepository.create({
           userId: req.user?.id || null,
           action,

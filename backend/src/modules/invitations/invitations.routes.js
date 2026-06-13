@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-// ✅ Solo HR (70) o superior puede gestionar invitaciones
+// Solo HR (70) o superior puede gestionar invitaciones
 router.get("/", verifyToken, requireLevel(70), getInvitations);
 router.post("/:id/resend", verifyToken, requireLevel(70), resendInvitation);
 router.delete("/:id", verifyToken, requireLevel(70), cancelInvitation);

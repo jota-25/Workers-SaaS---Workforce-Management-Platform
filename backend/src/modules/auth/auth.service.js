@@ -11,6 +11,7 @@ import { invitationRepository } from "../invitations/invitations.repository.js";
 import { workerRepository } from "../workers/workers.repository.js";
 import { sendEmail } from "../../shared/utils/mailer.js";
 import { AppError } from "../../middlewares/AppError.middleware.js";
+import { activityLogsRepository  } from "../activityLogs/activityLogs.repository.js";
 
 export const authService = {
 
@@ -177,7 +178,12 @@ export const authService = {
         7 * 24 * 60 * 60 * 1000
       ),
     });
-
+      await activityLogsRepository.create({
+          userId: user.id,
+          action: "LOGIN",
+          resource: "auth",
+          ip,
+      });
     return {
       accessToken,
       refreshToken,
