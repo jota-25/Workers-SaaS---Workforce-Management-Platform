@@ -13,7 +13,7 @@ jobs:
     name: Backend Tests
     runs-on: ubuntu-latest  # ← GitHub te da una VM Ubuntu gratis
 
-    # ✅ Servicio de PostgreSQL para los tests
+    #  Servicio de PostgreSQL para los tests
     services:
       postgres:
         image: postgres:16-alpine
