@@ -13,6 +13,7 @@ RUN npm install
 COPY . .
 
 #  Compilamos React → archivos estáticos en /app/dist
+ENV VITE_API_URL=http://localhost:3000
 RUN npm run build
 
 # ================================

@@ -1,4 +1,7 @@
 import { activityLogsRepository } from "../activityLogs/activityLogs.repository.js";
+import { pool } from "../../config/database.js";
+import ExcelJS from "exceljs";
+import { generateCSV } from "../../shared/utils/export.js";
 // ================================
 // Obtener logs con filtros y paginación
 // ================================

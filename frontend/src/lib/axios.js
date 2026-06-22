@@ -22,6 +22,10 @@ api.interceptors.response.use(
   async (error) => {
     const original = error.config;
 
+    //  EXCEPCIÓN: Si el error 401 viene del login, NO intentes refrescar token
+    if (original.url?.includes("/auth/login")) {
+      return Promise.reject(error); // Envía el error directo al catch de tu handleSubmit
+    }
     // Si el error es 401 (token expirado) y no es un retry
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true; // marcamos para no entrar en loop infinito

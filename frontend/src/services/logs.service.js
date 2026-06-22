@@ -23,7 +23,15 @@ export const exportLogs = (type, format, from, to) => {
   //  Creamos un link temporal con el token en el header
   // no podemos usar axios aquí porque necesitamos descarga directa
   fetch(url, { headers: { Authorization: `Bearer ${token}` } })
-    .then(res => res.blob())
+      .then(async (res) => {
+      // 1. Si la respuesta no es un código 200-299, leemos el error
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || "Error al generar el archivo");
+      }
+      // 2. Si todo está bien, obtenemos el archivo binario
+      return res.blob();
+    })
     .then(blob => {
       const link = document.createElement("a");
       link.href  = URL.createObjectURL(blob);
