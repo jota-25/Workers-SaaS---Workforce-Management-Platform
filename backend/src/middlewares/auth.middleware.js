@@ -17,3 +17,4 @@ export const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Token inválido" });
   }
 };
+
