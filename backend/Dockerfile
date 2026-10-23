@@ -1,6 +1,6 @@
 #  Usamos Node.js 20 en su versión Alpine
 # Alpine es una distribución Linux muy liviana (~5MB vs ~900MB de Ubuntu)
-FROM node:20-alpine
+FROM node:22.23.4-alpine
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
